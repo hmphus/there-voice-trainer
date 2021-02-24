@@ -24,7 +24,7 @@ static const GUID IID_IVoiceTrainerEvents = {0xE11C348B, 0xE78C, 0x491E, {0xB9, 
 
 CComModule _module;
 
-int CALLBACK WinMain(HINSTANCE instance, HINSTANCE prevInstance, LPSTR cmdLine, INT winOpts)
+INT CALLBACK WinMain(HINSTANCE instance, HINSTANCE prevInstance, LPSTR cmdLine, INT winOpts)
 {
     HWND mainDlg;
     if (mainDlg = FindWindow(_T(APPCLASS), NULL))
@@ -277,7 +277,15 @@ HRESULT STDMETHODCALLTYPE VoiceTrainer::OnLevelChange()
     LONG level = 0;
     if (m_voiceTrainer != NULL && m_voiceTrainer->GetRecordLevel(&level) == S_OK)
     {
+        WPARAM state;
+        if (level < 60)
+            state = PBST_NORMAL;
+        else if (level < 80)
+            state = PBST_PAUSED;
+        else
+            state = PBST_ERROR;
         SendDlgItemMessage(m_dlg, ID_PROGRESS_VOLUME, PBM_SETPOS, level, 0);
+        SendDlgItemMessage(m_dlg, ID_PROGRESS_VOLUME, PBM_SETSTATE, state, 0);
     }
     return S_OK;
 }
@@ -334,7 +342,7 @@ HRESULT STDMETHODCALLTYPE VoiceTrainer::OnConfigMessage()
         cformat.cbSize      = sizeof(cformat);
         cformat.dwMask      = CFM_COLOR;
         cformat.dwEffects   = 0;
-        cformat.crTextColor = RGB(255, 242, 0);
+        cformat.crTextColor = RGB(0, 182, 0);
         SendDlgItemMessage(m_dlg, ID_EDIT_MESSAGE, EM_SETCHARFORMAT, SCF_ALL, (LPARAM)&cformat);
         SetDlgItemText(m_dlg, ID_EDIT_MESSAGE, str);
     }
