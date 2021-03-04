@@ -48,7 +48,7 @@ INT CALLBACK WinMain(HINSTANCE instance, HINSTANCE prevInstance, LPSTR cmdLine, 
     mainClass.cbClsExtra = 0;
     mainClass.cbWndExtra = DLGWINDOWEXTRA;
     mainClass.hInstance = instance;
-    mainClass.hIcon = LoadIcon(NULL, IDI_APPLICATION);
+    mainClass.hIcon = LoadIcon(instance, MAKEINTRESOURCE(1));
     mainClass.hCursor = LoadCursor(NULL, IDC_ARROW);
     mainClass.hbrBackground = NULL;
     mainClass.lpszMenuName = NULL;
